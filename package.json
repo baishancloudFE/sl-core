@@ -1,0 +1,24 @@
+{
+  "name": "sl-core",
+  "version": "0.0.1",
+  "description": "sl core",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "sl": "./bin/sl.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "slConfig": {
+    "registry": ""
+  },
+  "author": "xiaozhong.liu",
+  "license": "ISC",
+  "dependencies": {
+
+  }
+}
