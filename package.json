@@ -1,6 +1,6 @@
 {
   "name": "sl-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "sl core",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,10 @@
   },
   "slConfig": {
     "registry": ""
+  },
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3"
   },
   "author": "xiaozhong.liu",
   "license": "ISC",
