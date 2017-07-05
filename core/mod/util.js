@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs')
-const fse = require('fs-extra')
 const path = require('path')
 const inquirer = require('inquirer')
 const _ = require('lodash')

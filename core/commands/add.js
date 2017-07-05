@@ -11,8 +11,8 @@ module.exports = function(sl) {
     'handler': function (args, opts) {
       const root = opts.rootArgv
       const cmd = root._[0]
-      const page = root.p || ''
-      const component = root.c || ''
+      const page = root.p
+      const component = root.c
 
       generator.add(page, component)
     }
