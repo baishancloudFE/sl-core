@@ -1,0 +1,8 @@
+{
+  "name": "bhummer",
+  "type": "igroot",
+  "builder": "igroot-builder",
+  "options": {
+    type: "project"
+  }
+}

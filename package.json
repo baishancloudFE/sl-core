@@ -1,6 +1,6 @@
 {
   "name": "sl-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "sl core",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,11 @@
   "author": "xiaozhong.liu",
   "license": "ISC",
   "dependencies": {
-
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "debug": "^2.6.8",
+    "update-notifier": "^2.2.0",
+    "user-home": "^2.0.0",
+    "yargs": "^8.0.2"
   }
 }
