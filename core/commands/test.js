@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = function(sl) {
 
@@ -8,8 +8,8 @@ module.exports = function(sl) {
     'alias': 't',
     'options': {},
     'handler': function* (args, opts) {
-      sl.log.warn('默认逻辑不提供此功能');
+      sl.log.warn('默认逻辑不提供此功能')
     }
-  };
+  }
 
-};
+}

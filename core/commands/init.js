@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const generator = require('igroot-generator')
 
@@ -16,6 +16,6 @@ module.exports = function(sl) {
       console.log('igroot generator init:')
       generator.init('./')
     }
-  };
+  }
 
-};
+}

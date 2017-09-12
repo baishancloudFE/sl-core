@@ -106,9 +106,7 @@ function* run(opts) {
     yargs.command(
       command.cmd, command.desc,
       addOptions(assign({}, command.options, kit.__action[command.name].options || {})),
-      addHandler(command, function(command, cmd, args, opts) {
-
-      })
+      addHandler(command, function(command, cmd, args, opts) {})
     );
   });
 

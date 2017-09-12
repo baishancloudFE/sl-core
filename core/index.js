@@ -49,14 +49,11 @@ SL.prototype = {
 
   registerCommands: function() {
     const sl = this
+    const commands = ['init', 'add', 'dev', 'build', 'lint']
 
     sl.alias = {}
 
-    sl._kitCommands = [
-      'init', 'add', 'dev', 'build'
-    ]
-
-    sl.kitCommands = sl._kitCommands.map(register)
+    sl.kitCommands = commands.map(register)
 
     sl.commands = {}
     sl.kitCommands.forEach(add)

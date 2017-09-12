@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 const generator = require('igroot-generator')
 
 module.exports = function(sl) {
@@ -16,6 +16,6 @@ module.exports = function(sl) {
 
       generator.add(page, component)
     }
-  };
+  }
 
-};
+}
