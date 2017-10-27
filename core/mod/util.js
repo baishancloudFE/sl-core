@@ -5,27 +5,19 @@ const path = require('path')
 const inquirer = require('inquirer')
 const _ = require('lodash')
 
-
 var filepathKey = '____bsyfile____'
 
 exports.lookupBSYJson = function(cwd) {
   cwd = cwd || process.cwd()
-  const bsyFile = path.join(cwd, 'bsy.json')
 
-  if (fs.existsSync(bsyFile)) {
-    return json(bsyFile)
+  let bsy
+  try {
+    bsy = require(path.join(cwd, 'bsy.json'))
+  } catch(e) {
+    bsy = {}
   }
 
-  function json(filepath) {
-    let bsyJson = {}
-
-    try {
-      bsyJson = require(filepath)
-    } catch(e) {}
-
-    bsyJson[filepathKey] = bsyFile
-    return bsyJson
-  }
+  return bsy
 }
 
 exports.getKitList = function() {

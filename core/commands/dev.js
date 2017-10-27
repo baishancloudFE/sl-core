@@ -1,5 +1,5 @@
 'use strict'
-const builder = require('igroot-builder')
+const util = require('../mod/util')
 
 module.exports = function(sl) {
   return {
@@ -34,8 +34,7 @@ module.exports = function(sl) {
       const cmd = root._[0]
       const page = root.p || ''
 
-      builder.run()
+      require(util.lookupBSYJson().builder).run()
     }
   }
-
 }

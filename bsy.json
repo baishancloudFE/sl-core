@@ -1,8 +1,6 @@
 {
-  "name": "bhummer",
-  "type": "igroot",
-  "builder": "igroot-builder",
-  "options": {
-    "type": "project"
-  }
+  "name": "sl-core",
+  "type": "dispatcher",
+  "builder": "",
+  "options": {}
 }

@@ -1,17 +1,14 @@
 {
   "name": "sl-core",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "sl core",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "bin": {
     "sl": "./bin/sl.js"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/baishancloudFE/sl-core.git"
   },
   "slConfig": {
     "registry": ""
@@ -27,10 +24,11 @@
     "co": "^4.6.0",
     "debug": "^2.6.8",
     "igroot-builder": "^0.3.6",
-    "igroot-generator": "^0.2.7",
+    "igroot-business-component-dev-builder": "^0.0.2",
     "inquirer": "^3.1.1",
     "lodash.assign": "^4.2.0",
     "lodash.omit": "^4.5.0",
+    "sl-generator": "^0.1.0",
     "update-notifier": "^2.2.0",
     "user-home": "^2.0.0",
     "yargs": "^8.0.2"

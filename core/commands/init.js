@@ -1,9 +1,8 @@
 'use strict'
 
-const generator = require('igroot-generator')
+const generator = require('sl-generator')
 
 module.exports = function(sl) {
-
   return {
     'cmd': 'init [type]',
     'desc': '初始化项目目录结构',
@@ -13,9 +12,8 @@ module.exports = function(sl) {
       const root = opts.rootArgv
       const cmd = root._[0]
 
-      console.log('igroot generator init:')
+      console.log('sl generator init:')
       generator.init('./')
     }
   }
-
 }

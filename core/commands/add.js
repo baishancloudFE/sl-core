@@ -2,10 +2,9 @@
 const generator = require('igroot-generator')
 
 module.exports = function(sl) {
-
   return {
     'cmd': 'add [type] [names...]',
-    'desc': '创建工程脚手架',
+    'desc': '新增页面或全局公共组件',
     'alias': 'a',
     'options': {},
     'handler': function (args, opts) {
@@ -17,5 +16,4 @@ module.exports = function(sl) {
       generator.add(page, component)
     }
   }
-
 }
