@@ -1,5 +1,5 @@
 'use strict'
-const generator = require('igroot-generator')
+const generator = require('sl-generator')
 
 module.exports = function(sl) {
   return {
