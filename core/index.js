@@ -49,7 +49,7 @@ SL.prototype = {
 
   registerCommands: function() {
     const sl = this
-    const commands = ['init', 'add', 'dev', 'build', 'lint']
+    const commands = ['init', 'add', 'dev', 'build', 'lint', 'version']
 
     sl.alias = {}
 

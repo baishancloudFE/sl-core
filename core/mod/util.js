@@ -21,9 +21,7 @@ exports.lookupBSYJson = function(cwd) {
 }
 
 exports.getKitList = function() {
-  return [
-    'igroot'
-  ]
+  return ['igroot']
 }
 
 exports.confirm = function confirm(msg) {
