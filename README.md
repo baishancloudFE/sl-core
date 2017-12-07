@@ -18,7 +18,7 @@ sl init [name]
 # 生成页面
 sl add -p [name]
 
-# 生成组件
+# 添加业务组件
 sl add -c [name]
 
 # 启动应用
@@ -29,4 +29,7 @@ sl lint
 
 # 打包应用
 sl build
+
+# 查看当前版本号
+sl -v
 ```

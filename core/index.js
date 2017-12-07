@@ -52,10 +52,8 @@ SL.prototype = {
     const commands = ['init', 'add', 'dev', 'build', 'lint', 'version']
 
     sl.alias = {}
-
-    sl.kitCommands = commands.map(register)
-
     sl.commands = {}
+    sl.kitCommands = commands.map(register)
     sl.kitCommands.forEach(add)
 
     function register(c) {
@@ -76,14 +74,7 @@ SL.prototype = {
   lookupBSYJson: util.lookupBSYJson,
 
   registerKit: function(name) {
-    const sl = this
-    let kit
-
-    kit = sl._kits[name]
-
-    if (kit) {
-      return kit
-    }
+    return this._kits[name]
   }
 }
 

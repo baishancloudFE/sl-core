@@ -1,6 +1,6 @@
 {
   "name": "sl-core",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "sl core",
   "main": "index.js",
   "bin": {
@@ -23,7 +23,7 @@
     "chalk": "^1.1.3",
     "co": "^4.6.0",
     "debug": "^2.6.8",
-    "igroot-builder": "^0.5.0",
+    "igroot-builder": "^1.0.0",
     "igroot-business-component-dev-builder": "^0.0.2",
     "inquirer": "^3.1.1",
     "lodash.assign": "^4.2.0",

@@ -110,21 +110,21 @@ function* run(opts) {
     );
   });
 
+  let unexec = true
+  sl.kitCommands.forEach(function(command) {
+    if (command.name === bCmd || (command.alias && rootArgv[command.alias])) {
+      command.handler(argv, opts)
+      unexec = false
+    }
+  })
+
 
   // root cmd
-  if (bCmd === '') {
+  if (unexec) {
     yargs.showHelp()
 
     return
   }
-
-
-  sl.kitCommands.forEach(function(command) {
-    if (command.name === bCmd) {
-      command.handler(argv, opts)
-    }
-  })
-
 
   function addOptions(options) {
     return function(yargs) {
