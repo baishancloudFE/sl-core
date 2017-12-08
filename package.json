@@ -1,6 +1,6 @@
 {
   "name": "sl-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sl core",
   "main": "index.js",
   "bin": {
