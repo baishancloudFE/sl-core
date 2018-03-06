@@ -31,13 +31,9 @@ module.exports = function(sl) {
       }
     },
     'handler': function (args, opts) {
-      const root = opts.rootArgv
-      const cmd = root._[0]
-      const page = root.p || ''
-
       console.log(chalk.blue('v2.0迁移指南: ') + chalk.underline('https://github.com/baishancloudFE/sl-core/wiki/SL-v2.0%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97'))
       console.log('\n')
-      require(util.lookupBSYJson().builder).dev()
+      require(util.lookupBSYJson().builder).dev(opts.rootArgv)
     }
   }
 }

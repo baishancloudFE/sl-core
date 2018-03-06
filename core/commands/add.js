@@ -8,12 +8,7 @@ module.exports = function(sl) {
     'alias': 'a',
     'options': {},
     'handler': function (args, opts) {
-      const root = opts.rootArgv
-      const cmd = root._[0]
-      const page = root.p
-      const component = root.c
-
-      generator.add(page, component)
+      generator.add(opts.rootArgv)
     }
   }
 }
