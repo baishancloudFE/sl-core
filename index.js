@@ -1,152 +1,149 @@
 #!/usr/bin/env node
-'use strict';
 
-const pkg = require('./package.json')
-const SlCore = require('./core')
-const chalk = require('chalk')
-const path = require('path')
-const yargs = require('yargs')
-const userHome = require('user-home')
-const updateNotifier = require('update-notifier')
-const co = require('co')
-const assign = require('lodash.assign')
-const omit = require('lodash.omit')
-const debug = require('debug')('sl:index')
+let config
+try { config = require('./sl.json') }
+catch (e) { config = {} }
 
-debug('start sl:index')
+const fs = require('fs')
+const npm = require('npm')
+const prefix = config.source || 'https://raw.githubusercontent.com/baishancloudFE/sl-client/master'
+const cache = {}
 
-// check node version
-if (process.version.slice(1) < '6.0.0') {
-  console.log('您当前Node版本为：' + chalk.bold(process.version))
-  console.log('运行 SL 需要' + chalk.bold('Node 6.x')+ ' 以上版本 ，请升级Node版本')
-  process.exit(2)
-}
+checkDependencies(() => run(argvHandle(process.argv)))
 
-// update notify
-updateNotifier({pkg}).notify()
+/**
+ * 检查依赖
+ * @param {Function} callback 
+ */
+function checkDependencies(callback) {
+  _require('/package.json', JSON.parse).then(({devDependencies}) => {
+    const modules = Object.keys(devDependencies).map(package => {
+      const version = devDependencies[package] = devDependencies[package].replace(/^\^|~/, '')
 
-// get argv
-const rootArgv = yargs.argv
-const argv = process.argv.slice()
-const cmd = rootArgv._[0] || ''
+      let currentVersion
+      try {currentVersion = require(`./node_modules/${package}/package.json`).version}
+      catch(e) {currentVersion = ''}
 
-debug(argv)
+      if (currentVersion === version) return ''
+      else return `${package}@${version}`
+    }).filter(_module => !!_module)
 
-var slConfig = {
-  'home': path.join(userHome, '.sl'),
-  'registry': pkg.slConfig.registry || 'https://registry.npm.taobao.org'
-}
-
-
-process.on('uncaughtException', throwError)
-process.on('unhandledRejection', throwError)
-function throwError(err, p) {
-  throw err
-}
-
-
-let sl = null
-co(function* () {
-  sl = yield loadCore()
-  yield runCore(sl)
-}).catch(function(err) {
-  throw err
-})
-
-
-function* loadCore() {
-  return new SlCore(slConfig)
-}
-
-
-function* runCore(sl) {
-  const opts = {
-    'yargs': yargs,
-    'cmd': cmd,
-    'argv': argv,
-    'rootArgv': rootArgv,
-    'showpkg': pkg
-  }
-
-  yield run.call(sl, opts)
-}
-
-
-function* run(opts) {
-  opts = opts || {}
-  const sl = this
-
-  const yargs = opts.yargs
-  const bCmd = opts.cmd
-  const argv = opts.argv
-  const rootArgv = opts.rootArgv
-  const pkg = opts.showpkg
-
-
-  // read bsy.json
-  const bsyJson = sl.lookupBSYJson() || {}
-
-
-
-  // get kit
-  const kit = {}
-
-  kit.__action = kit.__action || {}
-
-
-
-
-  // register kit commands
-  sl.kitCommands.forEach(function(command) {
-    kit.__action[command.name] = kit.__action[command.name] || {
-      'options': {},
-      'handler': command.handler
-    }
-
-    yargs.command(
-      command.cmd, command.desc,
-      addOptions(assign({}, command.options, kit.__action[command.name].options || {})),
-      addHandler(command, function(command, cmd, args, opts) {})
-    );
-  });
-
-  let unexec = true
-  sl.kitCommands.forEach(function(command) {
-    if (command.name === bCmd || (command.alias && rootArgv[command.alias])) {
-      command.handler(argv, opts)
-      unexec = false
-    }
+    install(modules, callback)
   })
 
+  /**
+   * 安装依赖
+   * @param {Array[String]} modules
+   * @param {Function} callback
+   */
+  function install(modules, callback) {
+    if (modules.length === 0)
+      return callback && callback()
 
-  // root cmd
-  if (unexec) {
-    yargs.showHelp()
+    const prefix = __dirname
 
-    return
-  }
-
-  function addOptions(options) {
-    return function(yargs) {
-      options = options || {}
-
-      for (let k in options) {
-        yargs.option(k, assign({}, options[k], {'group': '命令选项：'}));
+    npm.load({ prefix, registry: 'https://registry.npm.taobao.org' }, function (err) {
+      if (err) {
+        console.error(err)
+        console.log('\u001b[31m\n\n> Client error: Failed to load npm.\n\u001b[39m')
+        return
       }
 
-      return yargs
-    }
+      console.log('\u001b[90m> Uploading dependencies modules. This might take a couple of minutes.\u001b[39m')
+
+      npm.install(prefix, ...modules, function (err) {
+        if (err) {
+          console.error(err)
+          console.log('\u001b[31m\n\n> Client error: Failed to update dependencies.\n\u001b[39m')
+          return
+        }
+
+        console.log('\u001b[32m> Updated.\u001b[39m')
+        callback && callback()
+      })
+    })
   }
+}
 
-  function addHandler(command, fn) {
-    return function(argv) {
-      const cmd = argv._[0]
-      const args = argv._.slice(1)
-      const opts = omit(argv, '$0', '_')
+/**
+ * 分割系统参数
+ * @param {Arrat[String]} argv 
+ * @return 
+ */
+function argvHandle(argv) {
+  const result = {}
 
-      if (!opts.help && (bCmd == cmd)) {
-        fn(command, cmd, args, opts).catch()
+  argv.slice(2).forEach(arg => {
+    if (arg.indexOf('--') === 0) {
+      const part = arg.slice(2)
+
+      if (part.indexOf('=') > 0) {
+        const [key, value] = part.split('=')
+        result[key] = value
+
+        return
       }
+
+      if (part.indexOf('no-') === 0)
+        result[part.slice(3)] = false
+
+      else
+        result[part] = true
+
+      return
     }
+
+    if (arg.indexOf('-') === 0 && arg.length === 2)
+      return result[arg[1]] = true
+
+    if (arg.indexOf('=') > 0) {
+      const [key, value] = part.split('=')
+      result[key] = value
+
+      return
+    }
+
+    result[arg] = true
+  })
+
+  return result
+}
+
+/**
+ * 命令执行
+ * @param {Object} args
+ */
+function run(args) {
+  _require('/main').then(main => main(args))
+}
+
+/**
+ * require 网络版
+ * @param {String}   uri    文件地址
+ * @param {Function} handle 请求到的文件处理函数
+ */
+function _require(uri, handle = code => eval(code)) {
+  if (!cache[uri]) {
+    const filename = uri.split('/').pop()
+    const suffix = filename.indexOf('.') === -1 ? '.js' : ''
+    const isFull = /^https?:\/\//.test(uri)
+    const url = (isFull ? '' : prefix) + uri + suffix
+
+    cache[uri] = new Promise((resolve, reject) => {
+      const protocol = prefix.split(':')[0]
+
+      require(protocol).get(url, res => {
+        if (res.statusCode !== 200)
+          throw new Error('Failed to get the client code!')
+
+        let code = ''
+        res.setEncoding('utf8')
+        res.on('data', chunk => code += chunk)
+        res.on('end', () => resolve(handle(code)))
+        res.on('error', reject)
+      })
+    })
   }
+
+  return cache[uri]
 }
